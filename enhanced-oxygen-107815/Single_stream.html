@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<!-- {% autoescape true %} -->
+<html lang="en">
+<head>
+<link rel="stylesheet" href="../css/style.css">
+<!-- // <scrit type="text/javascript"> -->
+<!-- //     function show_image(src, width, height, alt) {
+//     var img = document.createElement("img");
+//     img.src = src;
+//     img.width = width;
+//     img.height = height;
+//     img.alt = alt;
+
+//     // This next line will just add it to the <body> tag
+//     document.body.appendChild(img);
+// } -->
+<!-- </script> -->
+</head>
+
+<body class="" id="top">
+<!--==============================
+              header
+=================================-->
+<header>
+  <div class="container_12">
+    <div class="grid_12">
+      <h1 class="logo">
+        <a href="/">
+          CONNEX.us
+          <span>Share the world!</span>
+        </a>
+      </h1>
+    </div>
+    <div class="clear"></div>
+  </div>
+  <section id="stuck_container">
+  <!--==============================
+              Stuck menu
+  =================================-->
+    <div class="container_12">
+        <div class="grid_12">          
+          <div class="navigation">
+            <nav>
+              <ul class="sf-menu">
+               <li><a href="/manage">Manage</a></li>
+               <li><a href="/createstream">Create</a></li>
+               <li class="current"><a href="/view">View</a></li>
+               <li><a href="/search">Search</a></li>
+               <li><a href="/Trending">Trending</a></li>
+               <li><a href="/social">Social</a></li>
+             </ul>
+            </nav>
+            <div class="clear"></div>
+          </div>       
+         <div class="clear"></div>  
+     </div> 
+     <div class="clear"></div>
+    </div> 
+  </section>
+</header>
+
+</body>
+  <center>
+    {%set count=0%}
+    {% for image in allimage %}
+        {% if count!=2 %}
+                <a href="/view_photo?blob={{image.blob_key}}">&nbsp&nbsp&nbsp&nbsp&nbsp<img src="/view_photo?blob={{image.blob_key}}" width="200" height="200">&nbsp&nbsp&nbsp&nbsp&nbspx</a>
+                {%set count=count+1 %}
+        {% else %}
+                <a href="/view_photo?blob={{image.blob_key}}">&nbsp&nbsp&nbsp&nbsp&nbsp<img src="/view_photo?blob={{image.blob_key}}" width="200" height="200">&nbsp&nbsp&nbsp&nbsp&nbspx</a><br><br><br>
+                {% set count=0 %}
+        {% endif %}
+    {% endfor %}
+
+    {% if more!='1'%}
+        <form action="/more?stream_name={{ stream_name }}" method="post" enctype="multipart/form-data" >
+            <br>
+            <div><input type="submit" value="More"></div>
+        </form>
+    {%endif%}
+
+    <form action="/subscribe?stream_name={{ stream_name }}" method="post" enctype="multipart/form-data" >
+        <br>
+        <div><input type="submit" value="Subscribe"></div>
+    </form>
+<!--defintion missing-->
+    <hr>
+
+
+    <br><br><br><a style="color:blue" href="{{ url|safe }}">{{ url_linktext }}</a>
+  </center>
+  </body>
+</html>
+<!-- {% endautoescape %} -->

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="" id="top">
+<!--==============================
+              header
+=================================-->
+<header>
+  <div class="container_12">
+    <div class="grid_12">
+      <h1 class="logo">
+        <a href="/">
+          CONNEX.us
+          <span>Share the world!</span>
+        </a>
+      </h1>
+    </div>
+    <div class="clear"></div>
+  </div>
+  <section id="stuck_container">
+  <!--==============================
+              Stuck menu
+  =================================-->
+    <div class="container_12">
+        <div class="grid_12">          
+          <div class="navigation">
+            <nav>
+              <ul class="sf-menu">
+               <li><a href="index.html">Manage</a></li>
+               <li class="current"><a href="/createstream">Create</a></li>
+               <li><a href="/singlestream">View</a></li>
+               <li><a href="/search.html">Search</a></li>
+               <li><a href="/Trending">Trending</a></li>
+               <li><a href="Social.html">Social</a></li>
+             </ul>
+            </nav>
+            <div class="clear"></div>
+          </div>       
+         <div class="clear"></div>  
+     </div> 
+     <div class="clear"></div>
+    </div> 
+  </section>
+</header>
+
+</body>
+  <body>
+  <center>
+    <!--{% for stream in allstream %}-->
+      <!--{% if stream.owner %}-->
+        <!--<b>{{ stream.owner.email }}-->
+          <!--{% if stream.owner.identity %}-->
+            <!--(The stream owener)-->
+          <!--{% endif %}-->
+        <!--</b> wrote:-->
+      <!--{% else %}-->
+       <!--An anonymous person wrote:-->
+      <!--{% endif %}-->
+      <!--<blockquote>{{ stream.name }}</blockquote>-->
+    <!--{% endfor %}-->
+
+    <form action="/createstream?owner_name={{ owner_name }}" method="post" style="color:white">
+        <table style="width:100%">
+            <tr>
+                <td>
+                    <textarea name="name" placeholder="lalal" rows="1" cols="60"></textarea>
+                    <div>Name your stream</div>
+                </td>
+                <td>
+                     <div><textarea name="tag" rows="4" cols="60"></textarea></div>
+                     <div>Tag your stream</div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                     <div><textarea name="subscriber"  rows="2" cols="60"></textarea></div>
+                     <div><textarea name="invite_message" rows="2" cols="60" value="optional message for invite"></textarea></div>
+                     <div>Add subscriber</div>
+                </td>
+                <td>
+                    <div><textarea name="cover_image" rows="4" cols="60"></textarea></div>
+                    <div>URL to cover image</div>
+                </td>
+            </tr>
+        </table>
+
+        <div><input type="submit" value="Create stream"></div>
+    </form>
+
+   
+
+
+
+    <a href="{{ url|safe }}">{{ url_linktext }}</a>
+
+  </center>
+  </body>
+</html>

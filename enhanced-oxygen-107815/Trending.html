@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="" id="top">
+<!--==============================
+              header
+=================================-->
+<header>
+  <div class="container_12">
+    <div class="grid_12">
+      <h1 class="logo">
+        <a href="/">
+          CONNEX.us
+          <span>Share the world!</span>
+        </a>
+      </h1>
+    </div>
+    <div class="clear"></div>
+  </div>
+  <section id="stuck_container">
+  <!--==============================
+              Stuck menu
+  =================================-->
+    <div class="container_12">
+        <div class="grid_12">
+          <div class="navigation">
+            <nav>
+              <ul class="sf-menu">
+               <li><a href="/manage">Manage</a></li>
+               <li><a href="/createstream">Create</a></li>
+               <li><a href="/view">View</a></li>
+               <li><a href="/search">Search</a></li>
+               <li class="current"><a href="/Trending">Trending</a></li>
+               <li><a href="/social">Social</a></li>
+             </ul>
+            </nav>
+            <div class="clear"></div>
+          </div>
+         <div class="clear"></div>
+     </div>
+     <div class="clear"></div>
+    </div>
+  </section>
+</header>
+
+</body>
+<body>
+<center>
+<table class="tblX" id="streams" style="color:white;border:0">
+    <tr>
+        {% for stream in streams %}
+            <td style="border:0">&nbsp&nbsp&nbsp&nbsp<a href ="/singlestream?stream_name={{stream.stream_id}}" ><img src="{{stream.cover_url}}" width="200" height="200"></a>&nbsp&nbsp&nbsp&nbsp</td>
+        {% endfor %}
+        <td class="col2" style="padding-left:30px;color:white">
+        <form action="/radio" method="post">
+        <input type="radio" name="freq" value="0">No reports<br>
+        <input type="radio" name="freq" value="5">Every 5 minutes<br>
+        <input type="radio" name="freq" value="60">Every 1 hour<br>
+        <input type="radio" name="freq" value="1440">Every day<br>
+        <p>
+          <input type="submit" value="Update Rate">
+        </p>
+      </form>
+    </td>
+    </tr>
+    <tr>
+        {% for stream in streams %}
+            <td style="border:0"><div style="color:white">{{stream.stream_id}}</div></td>
+        {% endfor %}
+    </tr>
+    <tr>
+        {% for stream in streams %}
+            <td style="border:0"><div style="color:white">{{stream.view_in_hour}} views</div></td>
+        {% endfor %}
+    </tr>
+    <tr>
+        {% for stream in streams %}
+            <td style="border:0"><div style="color:white">in past hour</div></td>
+        {% endfor %}
+    </tr>
+</table>
+    <br><br><br><a style="color:blue" href="{{ url|safe }}">{{ url_linktext }}</a>
+</center>>
+</body>
+</html>
+

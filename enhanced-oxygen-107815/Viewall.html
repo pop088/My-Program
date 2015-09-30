@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+{% autoescape true %}
+<html lang="en">
+<head>
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="" id="top">
+<!--==============================
+              header
+=================================-->
+<header>
+  <div class="container_12">
+    <div class="grid_12">
+      <h1 class="logo">
+        <a href="/">
+          CONNEX.us
+          <span>Share the world!</span>
+        </a>
+      </h1>
+    </div>
+    <div class="clear"></div>
+  </div>
+  <section id="stuck_container">
+  <!--==============================
+              Stuck menu
+  =================================-->
+    <div class="container_12">
+        <div class="grid_12">
+          <div class="navigation">
+            <nav>
+              <ul class="sf-menu">
+               <li><a href="/manage">Manage</a></li>
+               <li><a href="/createstream">Create</a></li>
+               <li class="current"><a href="/view">View</a></li>
+               <li><a href="/search">Search</a></li>
+               <li><a href="/Trending">Trending</a></li>
+               <li><a href="/social">Social</a></li>
+             </ul>
+            </nav>
+            <div class="clear"></div>
+          </div>
+         <div class="clear"></div>
+     </div>
+     <div class="clear"></div>
+    </div>
+  </section>
+</header>
+
+</body>
+  <body>
+  <center>
+
+  <div style="color:white;font-size: 150%">View All Streams</div><br>
+  <!--<table class="tblX" id="streams" style="color:white;border:0">-->
+    <!--<tr>-->
+        {%set count=0%}
+        {% for stream in allcover %}
+            {% if count!=3 %}
+                <a href ="/singlestream?stream_name={{stream.stream_id}}" >&nbsp&nbsp&nbsp&nbsp&nbsp<img src="{{stream.cover_url}}" width="200" height="200">&nbsp&nbsp&nbsp&nbsp&nbspx</a>
+                {%set count=count+1 %}
+            {% else %}
+                <a href ="/singlestream?stream_name={{stream.stream_id}}" ><img src="{{stream.cover_url}}" width="200" height="200"></a><br><br><br>
+                {% set count=0 %}
+            {% endif %}
+        {% endfor %}
+    <!--</tr>-->
+  <!--</table>-->
+    <br><br><br><a style="color:blue" href="{{ url|safe }}">{{ url_linktext }}</a>
+
+  </center>
+  </body>
+</html>
+{% endautoescape %}

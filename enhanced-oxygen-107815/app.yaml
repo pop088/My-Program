@@ -9,6 +9,9 @@ handlers:
 - url: /css
   static_dir: css
 
+- url: /js
+  static_dir: js
+
 - url: .*/view
   script: Viewall.app
 
@@ -24,12 +27,20 @@ handlers:
 - url: .*/error
   script: Error.app
 
+- url: .*/error3
+  script: Error.app
+
+- url: .*/error4
+  script: Error.app
+
 - url: .*/social
   script: Social.app
 
 - url: .*/Trending
   script: Trending.app
 
+- url: .*/map
+  script: map.app
 
 - url: .*
   script: manage.app

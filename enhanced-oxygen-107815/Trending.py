@@ -4,6 +4,7 @@ import os
 import database
 import urllib
 import logging
+import json
 from datetime import datetime
 
 from google.appengine.api import mail
@@ -37,24 +38,18 @@ class TrendingHandler(webapp2.RequestHandler):
         for stream in streams:
             view_list=[]
             for view_ in stream.view:
-                if (view_ - datetime.now()).seconds<'3600':
+                if int((datetime.now()- view_).seconds) <int('3600'):
                     view_list.append(1)
             stream.view_in_hour=len(view_list)
             stream.put()
 
         streaming = database.stream.query().order(-database.stream.view_in_hour).fetch(3)
 
-        # tren=database.trending.query().fetch()
-        # if tren:
-        #     for tr in tren:
-        #         for stream in streaming:
-        #             tr.top_id.append(stream.stream_id)
-        #             tr.top_view.append(stream.view_in_hour)
-        # else:
-        #     tr=database.trending()
-        #     for stream in streaming:
-        #         tr.top_id.append(stream.stream_id)
-        #         tr.top_view.append(stream.view_in_hour)
+        sname=[]
+        astream=database.stream.query().fetch()
+        for s in astream:
+            sname.append(s.stream_id)
+        strname=json.dumps(sname)
 
         user = users.get_current_user()
         if user:
@@ -71,7 +66,8 @@ class TrendingHandler(webapp2.RequestHandler):
                 # 'nav_links': USER_NAV_LINKS,
                 # 'path': os.path.basename(self.request.path).capitalize(),
                 # 'user_id': self.request.get('user_id'),
-            'streams': streaming
+            'streams': streaming,
+            'streamnames':strname,
         }
 
 

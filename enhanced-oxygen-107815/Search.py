@@ -5,6 +5,7 @@ import singlestream
 import Viewall
 import create
 import database
+import json
 
 from google.appengine.api import users
 from google.appengine.ext import ndb
@@ -33,14 +34,20 @@ class SearchMain(webapp2.RequestHandler):
             user = users.get_current_user().user_id()
         except:
             return self.redirect("/")
-
         searchname = self.request.get('searchfield')
 
         select=[]
-
+        sname=list()
+        astream=database.stream.query().fetch()
+        for s in astream:
+            sname.append(s.stream_id)
+        strname=json.dumps(sname)
+        # fout=open('streamname.txt', 'w')
+        # json.dump(sname,fout)
         stream_query = database.stream.query(database.stream.stream_id==searchname).fetch()
         for i in stream_query:
             select.append(i)
+
 
         number=len(select)
 
@@ -59,6 +66,7 @@ class SearchMain(webapp2.RequestHandler):
             'number':number,
             'url': url,
             'url_linktext': url_linktext,
+            'streamnames':strname,
         }
 
         template = JINJA_ENVIRONMENT.get_template('Search.html')

@@ -5,6 +5,7 @@ import create
 import urllib
 import database
 import singlestream
+import json
 
 from google.appengine.api import users
 from google.appengine.ext import ndb
@@ -28,6 +29,12 @@ class ViewAllMain(webapp2.RequestHandler):
         allcover_query = database.stream.query(database.stream.create_time!=None).order(database.stream.create_time)
         allcover = allcover_query.fetch(8)
 
+        sname=[]
+        astream=database.stream.query().fetch()
+        for s in astream:
+            sname.append(s.stream_id)
+        strname=json.dumps(sname)
+
         if user:
             url = users.create_logout_url(self.request.uri)
             url_linktext = 'Logout'
@@ -40,6 +47,7 @@ class ViewAllMain(webapp2.RequestHandler):
             'url': url,
             'url_linktext': url_linktext,
             'user': user,
+            'streamnames':strname,
         }
         template = JINJA_ENVIRONMENT.get_template('Viewall.html')
         self.response.write(template.render(template_values))

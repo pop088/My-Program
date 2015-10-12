@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 {% autoescape true %}
 <html lang="en">
+<title>Connexus</title>
 <head>
-<link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 </head>
 
 <body class="" id="top">
@@ -48,6 +50,19 @@
 </header>
 
 </body>
+
+<!--------------------------------search--------------------------->
+<body><center>
+    <form action="/search?search={{ search }}" method="get">
+        <div><input id="searchnames" type="text" name="searchfield" style="width:500px" value=""></div>
+        <table id= "sug" bgcolor="#FFFFFF" style="width:500px;border:1;text-align: left;">
+            <tbody style="color:black;font-family:'Arial';font-size: small" ></tbody>
+        </table>
+        <div><input id="search" type="submit" value="Search"></div>
+    </form>
+</center></body>
+    <br><hr><br>
+
   <body>
   <center>
 
@@ -60,5 +75,44 @@
     <!--<a href="{{ url|safe }}">{{ url_linktext }}</a>-->
   </center>>
   </body>
+
+<script>
+    var stname = '{{streamnames}}';
+    stname.toString();
+    var st1=stname.split('[').join("");
+    var st2=st1.split(']').join("");
+    var st3=st2.replace(/&#34;/g, "");
+    var streamname=st3.split(',');
+    var text;
+    var i;
+     var ent;
+    var patt;
+    $("#searchnames").keyup(function(){
+        $("#sug > tbody").empty();
+        text="";
+        ent = $("#searchnames").val();
+        patt=new RegExp(ent,"i");
+        if (ent != ""){
+            for(i=0;i < streamname.length;i++){
+                if(streamname[i].search(patt) != -1){
+                    $("#sug > tbody").append("<tr><td>"+streamname[i].trim()+"</td></tr>");
+                }
+            }
+        }
+        $("#sug").find("td").css("text-align","left");
+        $("#sug").find("td").on({
+        mouseenter: function(){
+            $(this).css("background-color", "lightgray");
+        },
+        mouseleave: function(){
+            $(this).css("background-color", "white");
+        },
+        click: function(){
+            window.location.href="/search?searchfield="+$(this).html();
+        }
+    });
+    });
+  </script>
+
 </html>
 {% endautoescape %}

@@ -1,20 +1,14 @@
 <!DOCTYPE html>
 <!-- {% autoescape true %} -->
 <html lang="en">
+<title>Connexus</title>
 <head>
-<link rel="stylesheet" href="../css/style.css">
-<!-- // <scrit type="text/javascript"> -->
-<!-- //     function show_image(src, width, height, alt) {
-//     var img = document.createElement("img");
-//     img.src = src;
-//     img.width = width;
-//     img.height = height;
-//     img.alt = alt;
-
-//     // This next line will just add it to the <body> tag
-//     document.body.appendChild(img);
-// } -->
-<!-- </script> -->
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <link href="../css/lightbox.css" rel="stylesheet">
+    <script src="../../js/lightbox.js"></script>
+        <link href="../css/toastr.css" rel="stylesheet"/>
+<script src="../../js/toastr.js"></script>
 </head>
 
 <body class="" id="top">
@@ -60,14 +54,25 @@
 </header>
 
 </body>
+<!--------------------------------search--------------------------->
+<body><center>
+    <form action="/search?search={{ search }}" method="get">
+        <div><input id="searchnames" type="text" name="searchfield" style="width:500px" value=""></div>
+        <table id= "sug" bgcolor="#FFFFFF" style="width:500px;border:1;text-align: left;">
+            <tbody style="color:black;font-family:'Arial';font-size: small" ></tbody>
+        </table>
+        <div><input id="search" type="submit" value="Search"></div>
+    </form>
+</center></body>
+    <br><hr><br>
   <center>
     {%set count=0%}
     {% for image in allimage %}
         {% if count!=2 %}
-                <a href="/view_photo?blob={{image.blob_key}}">&nbsp&nbsp&nbsp&nbsp&nbsp<img src="/view_photo?blob={{image.blob_key}}" width="200" height="200">&nbsp&nbsp&nbsp&nbsp&nbspx</a>
+                <a href="{{image.url}}" data-lightbox="image-1">&nbsp&nbsp&nbsp&nbsp&nbsp<img src="{{image.url}}" width="200" height="200">&nbsp&nbsp&nbsp&nbsp&nbspx</a>
                 {%set count=count+1 %}
         {% else %}
-                <a href="/view_photo?blob={{image.blob_key}}">&nbsp&nbsp&nbsp&nbsp&nbsp<img src="/view_photo?blob={{image.blob_key}}" width="200" height="200">&nbsp&nbsp&nbsp&nbsp&nbspx</a><br><br><br>
+                <a href="{{image.url}}" data-lightbox="image-1">&nbsp&nbsp&nbsp&nbsp&nbsp<img src="{{image.url}}" width="200" height="200">&nbsp&nbsp&nbsp&nbsp&nbspx</a><br><br><br>
                 {% set count=0 %}
         {% endif %}
     {% endfor %}
@@ -79,16 +84,64 @@
         </form>
     {%endif%}
 
+
+      <form action="/map?stream_name={{ stream_name }}" method="post">
+            <br>
+            <div><input type="submit" value="GeoView"></div>
+        </form>
+
     <form action="/subscribe?stream_name={{ stream_name }}" method="post" enctype="multipart/form-data" >
         <br>
-        <div><input type="submit" value="Subscribe"></div>
+        <div><input id="sub" type="submit" value="Subscribe"></div>
     </form>
 <!--defintion missing-->
     <hr>
-
+    <script src="../../js/lightbox.js"></script>
 
     <br><br><br><a style="color:blue" href="{{ url|safe }}">{{ url_linktext }}</a>
   </center>
   </body>
+<script>
+    var stname = '{{streamnames}}';
+    stname.toString();
+    var st1=stname.split('[').join("");
+    var st2=st1.split(']').join("");
+    var st3=st2.replace(/&#34;/g, "");
+    var streamname=st3.split(',');
+    var text;
+    var i;
+     var ent;
+    var patt;
+    $("#searchnames").keyup(function(){
+        $("#sug > tbody").empty();
+        text="";
+        ent = $("#searchnames").val();
+        patt=new RegExp(ent,"i");
+        if (ent != ""){
+            for(i=0;i < streamname.length;i++){
+                if(streamname[i].search(patt) != -1){
+                    $("#sug > tbody").append("<tr><td>"+streamname[i].trim()+"</td></tr>");
+                }
+            }
+        }
+        $("#sug").find("td").css("text-align","left");
+        $("#sug").find("td").on({
+        mouseenter: function(){
+            $(this).css("background-color", "lightgray");
+        },
+        mouseleave: function(){
+            $(this).css("background-color", "white");
+        },
+        click: function(){
+            window.location.href="/search?searchfield="+$(this).html();
+        }
+    });
+    });
+
+    $("#sub").click(function(){
+        toastr.info('Subscribe This Stream Success!')
+    });
+
+  </script>
 </html>
 <!-- {% endautoescape %} -->

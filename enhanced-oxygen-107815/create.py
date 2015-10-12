@@ -5,6 +5,7 @@ import Viewall
 import Search
 import database
 import singlestream
+import json
 
 from google.appengine.api import mail
 from google.appengine.api import users
@@ -43,6 +44,12 @@ class Create(webapp2.RequestHandler):
         except:
             return self.redirect("/")
 
+        sname=[]
+        astream=database.stream.query().fetch()
+        for s in astream:
+            sname.append(s.stream_id)
+        strname=json.dumps(sname)
+
         if user:
             url = users.create_logout_url(self.request.uri)
             url_linktext = 'Logout'
@@ -54,10 +61,11 @@ class Create(webapp2.RequestHandler):
             'user': user,
             'url': url,
             'url_linktext': url_linktext,
+            'streamnames':strname,
             # 'guestbook_name':guestbook_name
         }
 
-        template = JINJA_ENVIRONMENT.get_template('index2.html')
+        template = JINJA_ENVIRONMENT.get_template('create.html')
         self.response.write(template.render(template_values))
 
 
@@ -71,6 +79,9 @@ class CreateStream(webapp2.RequestHandler):
         for i in streaming:
             if (i.stream_id == self.request.get('name')):
                 return self.redirect('/error')
+
+        if (self.request.get('name')==""):
+            return self.redirect('/error3')
 
         stream = database.stream(parent = ndb.Key('User', user))
         stream.numberofpic = 0

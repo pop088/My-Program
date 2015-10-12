@@ -31,7 +31,23 @@ class Error2(webapp2.RequestHandler):
         template = JINJA_ENVIRONMENT.get_template('Error2.html')
         self.response.write(template.render(template_values))
 
+class Error3(webapp2.RequestHandler):
+    def get(self):
+        template_values = {
+        }
+        template = JINJA_ENVIRONMENT.get_template('Error3.html')
+        self.response.write(template.render(template_values))
+
+class Error4(webapp2.RequestHandler):
+    def get(self):
+        template_values = {
+        }
+        template = JINJA_ENVIRONMENT.get_template('Error4.html')
+        self.response.write(template.render(template_values))
+
 app = webapp2.WSGIApplication([
     ('/error', Error),
     ('/error2', Error2),
+    ('/error3', Error3),
+    ('/error4', Error4),
         ], debug=True)

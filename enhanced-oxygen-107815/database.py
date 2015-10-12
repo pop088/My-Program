@@ -50,6 +50,7 @@ class imagedata(ndb.Model):
      url = ndb.StringProperty()
      stream_id = ndb.StringProperty()
      name = ndb.StringProperty()
+     position=ndb.StringProperty()
 
 class stream(ndb.Model):
     user_id = ndb.StringProperty()

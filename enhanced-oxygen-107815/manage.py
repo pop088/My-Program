@@ -9,6 +9,7 @@ import create
 import singlestream
 import Trending
 import Error
+import json
 
 from google.appengine.api import users
 from google.appengine.ext import ndb
@@ -52,7 +53,11 @@ class Manage(webapp2.RequestHandler):
             user = users.get_current_user().user_id()
         except:
             return self.redirect("/")
-
+        sname=[]
+        astream=database.stream.query().fetch()
+        for s in astream:
+            sname.append(s.stream_id)
+        strname=json.dumps(sname)
         user = users.get_current_user().user_id()
         if user:
             url = users.create_logout_url(self.request.uri)
@@ -80,6 +85,7 @@ class Manage(webapp2.RequestHandler):
             'sub_stream':sub_stream,
             'url': url,
             'url_linktext': url_linktext,
+            'streamnames':strname,
         }
 
         template = JINJA_ENVIRONMENT.get_template('manage.html')
@@ -142,5 +148,9 @@ app = webapp2.WSGIApplication([
     ('/more', singlestream.More),
     ('/error', Error.Error),
     ('/error2', Error.Error2),
+    ('/error3', Error.Error3),
+    ('/error4', Error.Error4),
+    ('/webupload',singlestream.WebUpload),
+    ('/webup',singlestream.webuploadhandler)
 
 ], debug=True)

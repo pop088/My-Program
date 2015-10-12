@@ -5,6 +5,7 @@ import create
 import urllib
 import database
 import singlestream
+import json
 
 from google.appengine.api import users
 from google.appengine.ext import ndb
@@ -25,6 +26,12 @@ class Social(webapp2.RequestHandler):
             return self.redirect("/")
 
 
+        sname=[]
+        astream=database.stream.query().fetch()
+        for s in astream:
+            sname.append(s.stream_id)
+        strname=json.dumps(sname)
+
         if user:
             url = users.create_logout_url(self.request.uri)
             url_linktext = 'Logout'
@@ -36,7 +43,7 @@ class Social(webapp2.RequestHandler):
             'user': user,
             'url': url,
             'url_linktext': url_linktext,
-
+            'streamnames':strname,
         }
         template = JINJA_ENVIRONMENT.get_template('social.html')
         self.response.write(template.render(template_values))

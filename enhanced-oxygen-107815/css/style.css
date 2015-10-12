@@ -449,7 +449,8 @@ h1:after {
 }
 /****Content****/
 #content {
-  background-color: #ffffff;
+
+  round-color: #ffffff;
 }
 /****Non suppage set****/
 .page1 header {

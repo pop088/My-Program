@@ -71,7 +71,7 @@
             <br><br>
         <div id="map_canvas" style="width:800px;height:500px"></div>
         <br>
-         <div><input id="position" type="text" name="position" style="width:500px;color:#999" value="Position" onFocus="if(value==defaultValue){value='';this.style.color='#000'}" onBlur="if(!value){value=defaultValue; this.style.color='#999'}" ></div>
+         <div><input id="position" type="text" name="position" style="width:500px;color:#999" value=null onFocus="if(value==defaultValue){value='';this.style.color='#000'}" onBlur="if(!value){value=defaultValue; this.style.color='#999'}" ></div>
         <div><input id="submit" type="submit" value="Submit"></div>
     </form>
 
@@ -114,7 +114,7 @@
         mouseleave: function(){
             $(this).css("background-color", "white");
         },
-        click: function(){
+        click: function(){fc
             $("#streamname").val($(this).html());
             $("#sug > tbody").empty();
         }

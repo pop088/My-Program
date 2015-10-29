@@ -83,9 +83,10 @@
         {% endfor %}
 
     {% if more!='1'%}
-        <form action="/more?stream_name={{ stream_name }}" method="post">
+        <form action="/singlestream?stream_name={{ stream_name }}&more=1" method="post">
             <br>
             <div><input type="submit" value="More"></div>
+            <input style="display:none;" type="text" name="more" value="1"><br>
         </form>
     {%endif%}
       <form action="/map?stream_name={{ stream_name }}" method="post">

@@ -10,6 +10,7 @@ import singlestream
 import Trending
 import Error
 import json
+import android
 
 from google.appengine.api import users
 from google.appengine.ext import ndb
@@ -26,13 +27,16 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 
 class MainPage(webapp2.RequestHandler):
     def get(self):
-
+        img_url = self.request.get('img_url')
         user = users.get_current_user()
         if user:
             url = users.create_logout_url(self.request.uri)
             url_linktext = 'Logout'
         else:
-            url = users.create_login_url('/manage')
+            if img_url:
+                url = users.create_login_url("/webupload?img_url="+img_url)
+            else:
+                url = users.create_login_url('/manage')
             url_linktext = 'Login'
 
         template_values = {
@@ -145,12 +149,15 @@ app = webapp2.WSGIApplication([
     ('/email60', Trending.email60),
     ('/email1440', Trending.email1440),
     ('/radio',Trending.RadioHandler),
-    ('/more', singlestream.More),
     ('/error', Error.Error),
     ('/error2', Error.Error2),
     ('/error3', Error.Error3),
     ('/error4', Error.Error4),
     ('/webupload',singlestream.WebUpload),
-    ('/webup',singlestream.webuploadhandler)
+    ('/webup',singlestream.webuploadhandler),
+    ('/viewAllPhotos', android.ViewAllPhotos),
+    ('/viewSingle', android.ViewSingle),
+    ('/getUploadURL',android.GetUploadURL),
+    ('/uploadHandler', android.UploadHandler),
 
 ], debug=True)

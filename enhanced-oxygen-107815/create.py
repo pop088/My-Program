@@ -106,7 +106,10 @@ class CreateStream(webapp2.RequestHandler):
         for i in tags:
             stream.tag.append(i)
 
-        stream.cover_url = self.request.get('cover_image')
+        if self.request.get('cover_image'):
+            stream.cover_url = self.request.get('cover_image')
+        else:
+            stream.cover_url = "http://lh3.googleusercontent.com/aHVWqx3TgwzGTX4LfSnybFl7MAdq5JnaeP7xA0yzXrzNxgp4P9FOENxfahpNJ6RJ3up5f9fkncmQaOHdIL1xr0AXWwtuk5SZKIaETg"
         stream.owner = user
         stream.put()
 

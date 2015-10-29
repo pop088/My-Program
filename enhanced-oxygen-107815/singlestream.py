@@ -66,7 +66,7 @@ class SingleStreamMain(webapp2.RequestHandler):
         if more=='1':
             allimage = allimage_query.fetch()
         else:
-            allimage=allimage_query.fetch(3)
+            allimage = allimage_query.fetch(3)
 
         upload_url = blobstore.create_upload_url('/upload_photo')
 
@@ -87,6 +87,72 @@ class SingleStreamMain(webapp2.RequestHandler):
             template = JINJA_ENVIRONMENT.get_template('Single_stream_owner.html')
             self.response.write(template.render(template_values))
 
+    def post(self):
+        try:
+            user = users.get_current_user().user_id()
+        except:
+            return self.redirect("/")
+
+        sname=[]
+        astream=database.stream.query().fetch()
+        for s in astream:
+            sname.append(s.stream_id)
+        strname=json.dumps(sname)
+
+        user = users.get_current_user().user_id()
+        if user:
+            url = users.create_logout_url(self.request.uri)
+            url_linktext = 'Logout'
+        else:
+            url = users.create_login_url(self.request.uri)
+            url_linktext = 'Login'
+
+        stream_name = self.request.get('stream_name')
+        more=self.request.get('more')
+        user = users.get_current_user().user_id()
+
+        streaming = database.stream.query().fetch()
+
+        exist = database.stream.query(database.stream.stream_id==stream_name).fetch()
+
+        if not exist:
+            return self.redirect("/error2")
+
+        own=0
+        for mystream in streaming:
+            if mystream.stream_id==stream_name and mystream.user_id!=user:
+                mystream.numview = mystream.numview+1
+                mystream.view.append(datetime.now())
+                own=1
+                mystream.put()
+                break
+
+        allimage_query = database.imagedata.query(ndb.AND(
+            database.imagedata.stream_id == stream_name,database.imagedata.date!=None)).order(database.imagedata.date)
+
+        if more=='1':
+            allimage = allimage_query.fetch()
+        else:
+            allimage = allimage_query.fetch(3)
+
+        upload_url = blobstore.create_upload_url('/upload_photo')
+
+        template_values = {
+            'more':more,
+            'allimage': allimage,
+            'stream_name': urllib.quote_plus(stream_name),
+            'upload_url':upload_url,
+            'url': url,
+            'url_linktext': url_linktext,
+            'streamnames':strname,
+        }
+
+        if own==1:
+            template = JINJA_ENVIRONMENT.get_template('Single_stream.html')
+            self.response.write(template.render(template_values))
+        elif own==0:
+            template = JINJA_ENVIRONMENT.get_template('Single_stream_owner.html')
+            self.response.write(template.render(template_values))
 
 class SingleStream(blobstore_handlers.BlobstoreUploadHandler):
     def post(self):
@@ -135,11 +201,13 @@ class SingleStream(blobstore_handlers.BlobstoreUploadHandler):
 class subscribe(webapp2.RequestHandler):
     def post(self):
         user = users.get_current_user().user_id()
+        user_email= users.get_current_user().email()
         stream_name = self.request.get('stream_name')
 
         sub = database.Subscribe()
         sub.stream_id=stream_name
         sub.user_id=user
+        sub.user_email=user_email
         sub.put()
 
         direct = {'stream_name': self.request.get('stream_name')}
@@ -153,21 +221,13 @@ class ViewPhotoHandler(blobstore_handlers.BlobstoreDownloadHandler):
         blob = self.request.get('blob')
         self.send_blob(blob)
 
-class More(webapp2.RequestHandler):
-    def post(self):
-            direct = {'stream_name': self.request.get('stream_name')}
-            direct = urllib.urlencode(direct)
-            direct2 = {'more': 1}
-            direct2 = urllib.urlencode(direct2)
-            self.redirect('/singlestream?' + direct+'&'+direct2)
-
 class WebUpload(webapp2.RequestHandler):
     def get(self):
         img_url = self.request.get('img_url')
         try:
             user = users.get_current_user().user_id()
         except:
-            return self.redirect("/webupload?img_url="+img_url)
+            return self.redirect("/?img_url="+img_url)
 
         user = users.get_current_user().user_id()
         if user:
@@ -215,14 +275,16 @@ class webuploadhandler(blobstore_handlers.BlobstoreUploadHandler):
             user_photo.stream_id = stream_name
             user_photo.url = self.request.get('url')
             user_photo.user_id = user
-            user_photo.position = self.request.get('position')
+            place = self.request.get('position')
+            place2=place.replace(',','%')
+            user_photo.position=place2
+
 
             owns=1
             for mystream in streaming:
                 if mystream.stream_id==stream_name:
-                #     if(mystream.cover_key==None):
-                #         mystream.cover_key=upload.key()
-                #         mystream.cover_url =images.get_serving_url(upload.key())
+                    # if(mystream.numberofpic==0):
+                    #     mystream.cover_url =images.get_serving_url(upload.key())
 
 
                     # mystream.blob_key.append(upload.key())
@@ -247,7 +309,6 @@ app = webapp2.WSGIApplication([
     ('/view_photo',ViewPhotoHandler),
     ('/upload_photo', SingleStream),
     ('/subscribe',subscribe),
-    ('/more',More),
     ('/webupload',WebUpload),
     ('/webup',webuploadhandler)
 

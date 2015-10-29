@@ -68,16 +68,14 @@ class Map(webapp2.RequestHandler):
 
         urllist=[]
         daysago=[]
+        location=[]
         for i in allimage:
             urllist.append(i.url)
             day = int((datetime.now()-i.date).days)
             daysago.append(day)
-
+            location.append(i.position)
         url=json.dumps(urllist)
-        # if more=='1':
-
-        # else:
-        #     allimage=allimage_query.fetch(3)
+        position=json.dumps(location)
 
         upload_url = blobstore.create_upload_url('/upload_photo')
 
@@ -92,6 +90,7 @@ class Map(webapp2.RequestHandler):
             'url': url,
             'url_linktext': url_linktext,
             'streamnames':strname,
+            'position':position
         }
 
         # if own==1:

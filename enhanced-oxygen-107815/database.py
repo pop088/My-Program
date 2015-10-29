@@ -8,6 +8,7 @@ from google.appengine.ext import blobstore
 class Subscribe(ndb.Model):
     user_id = ndb.StringProperty()
     stream_id= ndb.StringProperty()
+    user_email=ndb.StringProperty()
 
 class trending(ndb.Model):
     top_id=ndb.StringProperty(repeated=True)
@@ -54,7 +55,8 @@ class imagedata(ndb.Model):
 
 class stream(ndb.Model):
     user_id = ndb.StringProperty()
-    owner=ndb.StringProperty
+    user_email=ndb.StringProperty()
+    owner=ndb.StringProperty()
     numberofpic = ndb.IntegerProperty()
     last_add = ndb.StringProperty()
     cover_key = ndb.BlobKeyProperty()  #ssss

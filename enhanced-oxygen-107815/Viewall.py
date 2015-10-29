@@ -27,8 +27,7 @@ class ViewAllMain(webapp2.RequestHandler):
             return self.redirect("/")
 
         allcover_query = database.stream.query(database.stream.create_time!=None).order(database.stream.create_time)
-        allcover = allcover_query.fetch(8)
-
+        allcover = allcover_query.fetch()
         sname=[]
         astream=database.stream.query().fetch()
         for s in astream:

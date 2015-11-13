@@ -1,0 +1,12 @@
+amaranth@hadoopmaster:~/Documents$ javac -cp junit-4.11.jar:easymock-3.0.jar:. TestMp3Player.java Mp3Player.java MockMp3Player.java
+Note: TestMp3Player.java uses unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+amaranth@hadoopmaster:~/Documents$ java -cp junit-4.11.jar:.:easymock-3.0.jar:objenesis-tck-1.2.jar:cglib-nodep-2.2.2.jar:hamcrest-1.10.jar org.junit.runner.JUnitCore TestMp3Player
+JUnit version 4.11
+...
+Time: 0.008
+
+OK (3 tests)
+
+amaranth@hadoopmaster:~/Documents$ 
+

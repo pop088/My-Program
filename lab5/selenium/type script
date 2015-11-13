@@ -1,0 +1,37 @@
+TEST valid users
+Login successful andy
+Login successful bob
+Login successful charley
+Login failed gagag
+
+
+TEST case-sensitivity
+Login failed for andy
+Login failed for bob
+Login successful for charley 
+
+
+TEST lockout
+bad login1
+bad login2
+bad login3
+LOCKOUT TEST
+Test failed No lockout
+
+
+TEST results precision
+Test passed for double precision
+Test failed Converted Temperatures out of [0-212] range have double precision
+
+
+TEST input as floating point numbers
+Test passed: input is floating point numbers
+Test failed 9.73e2 works
+
+
+TEST invalid input temperatures
+Test passed for invalid input
+
+
+TEST case insensitivity of “farenheitTemperature"
+Test failed:farenheitTemperature is case sensitive
